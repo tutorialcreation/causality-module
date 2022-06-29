@@ -72,7 +72,6 @@ from sklearn.preprocessing import StandardScaler
 
 # #### Check dimension of the dataset, missing values and data type.
 
-# In[7]:
 class EDA:
     def __init__(self) -> None:
         pass
@@ -569,6 +568,5 @@ class EDA:
 
     # <b>Lets drop correlated variables and check again heat map.</b>
 
-    # In[66]:
 
 
