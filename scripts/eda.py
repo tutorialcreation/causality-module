@@ -21,6 +21,7 @@ class EDA:
             "uniqueness":df.apply(lambda x: len(x.unique())).sort_values(ascending=False).head(10),
             "missing_values":df.isnull().sum(),
             "duplicates":df.duplicated().sum(),
+            "data_snapshot":df.head()
 
         }
         return checks
