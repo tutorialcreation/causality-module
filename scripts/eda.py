@@ -257,7 +257,7 @@ class EDA:
 
 
 
-    def test_data_normality(self,x):
+    def test_data_normality(self,X):
         """
         a function to perform tests on normality
         
@@ -497,7 +497,7 @@ class EDA:
         data = pd.concat([y,data_n_2.iloc[:,start:stop]],axis=1)
         plt.figure(figsize=(10,10))
         grid=sns.pairplot(data=data,kind ="scatter",hue="diagnosis",palette="Set1")
-        grid = grid.map_upper(corr)
+        grid = grid.map_upper(self.corr)
 
 
     # <b>Pairplot for first six features (1-6).</b>

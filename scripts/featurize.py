@@ -57,7 +57,6 @@ dataset = pd.read_csv("../data/data.csv")
 
 # #### Drop unnecessary columns in a dataset
 
-# In[3]:
 class Featurize:
     def __init__(self) -> None:
         pass
@@ -122,7 +121,7 @@ class Featurize:
     # In[75]:
 
 
-    def test_rf(self,x,y):
+    def test_rf(self,x_1,y):
         """
         find correlation tests by random forest
         
@@ -268,15 +267,6 @@ class Featurize:
         return rfecv,fs_rfecv
 
 
-    # In[65]:
-
-
-    rfecv,fs_rfecv = by_rfecv(x_train,y_train)
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score of number of selected features")
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
 
 
     # Finally, we find best 15 features that are 'texture_mean', 'area_mean', 'smoothness_mean', 'concavity_mean',
@@ -512,11 +502,11 @@ class Featurize:
         returns:
             variance inflation dataframe
         """
-        vif = calculate_vif(x_train)
+        vif = self.calculate_vif(x_train)
         while vif['VIF'][vif['VIF'] > 10].any():
             remove = vif.sort_values('VIF',ascending=0)['Features'][:1]
             x_train.drop(remove,axis=1,inplace=True)
-            vif = calculate_vif(x_train)
+            vif = self.calculate_vif(x_train)
         return vif
 
 
