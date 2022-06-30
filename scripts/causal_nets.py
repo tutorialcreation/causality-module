@@ -381,7 +381,7 @@ class CausalNet:
 
             print(f"{layout}: {description}")
             image_binary = viz.draw(format="png", prog=layout)
-            display(Image(image_binary, width=500))
+            Image(image_binary, width=500)
 
 
     # In[206]:
