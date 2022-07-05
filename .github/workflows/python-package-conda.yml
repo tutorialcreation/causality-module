@@ -32,11 +32,17 @@ jobs:
     - name: Test with pytest
       run: |
         python -m unittest discover tests/
-    - name: Create CML report
-      env:
-        REPO_TOKEN: ${{ secrets.TOKEN }}
-      run: |
-        echo "
-            completed testing the causal graphs, 
-        " > report.md
-        cml send-comment report.md
+    
+  cml:
+    runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          echo "
+              writing tests for the data, 
+          " > report.md
+          cml send-comment report.md
