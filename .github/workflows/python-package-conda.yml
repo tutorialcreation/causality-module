@@ -32,3 +32,11 @@ jobs:
     - name: Test with pytest
       run: |
         python -m unittest discover tests/
+    - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          echo "
+              completed testing the causal graphs, 
+          " > report.md
+          cml send-comment report.md

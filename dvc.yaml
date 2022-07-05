@@ -1,0 +1,10 @@
+stages:
+  train:
+    cmd: python scripts/causal_nets.py ${size}
+    deps:
+    - data/data.csv
+    - scripts/causal_nets.py
+    params:
+    - size
+    outs:
+    - models/model_bn.pkl
