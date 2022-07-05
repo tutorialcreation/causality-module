@@ -26,6 +26,7 @@ import networkx as nx
 import joblib
 
 from IPython.display import Image
+import mlflow
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -387,6 +388,8 @@ class CausalNet:
     # In[206]:
 
 
+    
+
 
 
     # In[82]:
@@ -469,3 +472,38 @@ class CausalNet:
     # In[83]:
 
 
+if __name__=='__main__':
+    cnet= CausalNet()
+    RATIO = 0.30
+    FEATURES='fs_voted'
+    
+    import sys
+    data_size = int(sys.argv[1])
+
+    x_train, y_train, x_test, y_test = cnet.load_data('../data/data.csv',RATIO)
+    df_feat = cnet.scale_data(x_train,y_train,FEATURES)
+    SM = from_pandas(df_feat,tabu_parent_nodes=['diagnosis'])
+    cnet.draw_network(SM)
+    sm = from_pandas(df_feat, tabu_parent_nodes=['diagnosis'],)
+    cnet.vis_sm(sm)
+    sm.remove_edges_below_threshold(0.8)    
+    cnet.vis_sm(sm)
+    sm2 = from_pandas(df_feat[:int(len(df_feat)*data_size)], tabu_parent_nodes=['diagnosis'],)
+    sm2.remove_edges_below_threshold(0.8)
+    sm2 = sm2.get_largest_subgraph()
+    cnet.vis_sm(sm2)
+    cnet.jaccard_similarity(sm.edges, sm2.edges)
+    with mlflow.start_run():
+        edge_list,bn = cnet.get_edges(sm2)
+        features_cx = ['concavity_mean','smoothness_worst','smoothness_mean']
+        discretised_data = cnet.discretise_data(features_cx,df_feat);discretised_data
+        
+        joblib.dump(bn, "../models/model_bn.pkl")
+        mlflow.log_artifact("model",'../models/model_bn.pkl')
+
+        report = classification_report(bn, x_test, "diagnosis") 
+        for k,v in report.items():
+            mlflow.log_metric(k,v)
+        
+    cnet.draw_graph(sm2)
+    

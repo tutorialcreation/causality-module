@@ -1,0 +1,9 @@
+name: causality
+
+entry_points:
+  main:
+    parameters:
+      size: {type: int}
+    command: "python causal_nets.py {size}"
+
+ 
